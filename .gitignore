@@ -1,0 +1,40 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+build/
+dist/
+*.egg-info/
+
+# --- Базы данных ---
+# Игнорируем локальные БД, чтобы не пушить тестовые данные в гит
+*.sqlite3
+*.db
+*.db-journal
+
+# --- Тестирование и отчеты ---
+.pytest_cache/
+.coverage
+htmlcov/
+nosetests.xml
+coverage.xml
+*.log
+
+# --- IDE (Antigravity / VS Code / JetBrains) ---
+.vscode/
+.antigravity/
+.idea/
+*.swp
+*.swo
+
+# --- Windows ---
+Thumbs.db
+Desktop.ini
+
+# --- Переменные окружения (Секреты) ---
+# Сюда мы будем складывать токены и пароли, их НЕЛЬЗЯ пушить
+.env
