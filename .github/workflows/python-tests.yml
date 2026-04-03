@@ -1,0 +1,28 @@
+name: Muninn Core CI
+
+on:
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13" # Твоя версия
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install pytest httpx fastapi sqlalchemy pydantic anyio # на случай если в requirements чего-то нет
+
+    - name: Run tests with Pytest
+      run: |
+        export PYTHONPATH=$PYTHONPATH:.
+        python -m pytest
