@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Table, ForeignKey
+from sqlalchemy import Column, String, Integer, Table, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -16,7 +16,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role = Column(String, default="user")  # admin / user
+    is_active = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=True)
     
     # Группы, к которым у пользователя есть доступ (для роли user)
     allowed_groups = relationship("Group", secondary=user_group_association)
