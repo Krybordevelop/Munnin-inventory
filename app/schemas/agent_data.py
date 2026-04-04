@@ -18,3 +18,6 @@ class AgentRegistration(BaseModel):
     os_info: AgentOS
     hardware: AgentHardware
     ipv6: Optional[str] = None
+
+class HostUpdate(BaseModel):
+    status: str = Field(..., pattern="^(approved|rejected|pending)$")
