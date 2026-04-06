@@ -9,12 +9,19 @@ from app.schemas.agent_data import HostUpdate
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 @router.get("/hosts")
-async def list_hosts(
-    db: Session = Depends(get_db), 
-    current_user: User = Depends(get_current_user) 
-):
-    # Теперь этот список видят только те, у кого есть валидный JWT
-    return db.query(Host).all()
+async def list_hosts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    hosts = db.query(Host).all()
+    result = []
+    for h in hosts:
+        # Если группы нет, подставляем текст
+        group_name = h.group.name if h.group else "БезГруппы"
+        result.append({
+            "id": h.id,
+            "hostname": h.hostname,
+            "group": group_name,
+            "status": h.status
+        })
+    return result
 
 @router.patch("/hosts/{host_id}")
 async def approve_host(
