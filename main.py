@@ -1,10 +1,3 @@
-from fastapi import FastAPI
-from app.api.v1.register import router as agent_router
+from app.main import app
 
-app = FastAPI(title="Muninn Inventory API")
-
-app.include_router(agent_router)
-
-@app.get("/")
-def read_root():
-    return {"status": "Muninn Core is running"}
+__all__ = ["app"]

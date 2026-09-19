@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Projects</h1>
+<form method="post" action="/admin/projects" class="card">
+  <input type="hidden" name="csrf_token" value="{{ csrf }}">
+  <input name="name" required maxlength="120" placeholder="Project name">
+  <input name="description" maxlength="4000" placeholder="Description">
+  <button>Create project</button>
+</form>
+{% for project in projects %}
+<section class="card">
+  <h2>{{ project.name }}</h2><p>{{ project.description }}</p>
+  <h3>API tokens</h3>
+  <div id="tokens-{{ project.id }}">
+  {% for token in project.tokens %}{% include "_token.html" %}{% else %}<p class="muted">No tokens.</p>{% endfor %}
+  </div>
+  <form hx-post="/admin/projects/{{ project.id }}/tokens" hx-target="#token-result-{{ project.id }}" hx-swap="innerHTML">
+    <input type="hidden" name="csrf_token" value="{{ csrf }}">
+    <input name="name" required maxlength="120" placeholder="Token name">
+    <button>Create rotation token</button>
+  </form>
+  <div id="token-result-{{ project.id }}"></div>
+</section>
+{% endfor %}
+{% endblock %}

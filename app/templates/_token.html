@@ -1,0 +1,10 @@
+<div id="token-{{ token.id }}">
+  <code>{{ token.prefix }}…</code> — {{ token.name }}
+  <small>created {{ token.created_at }} · last used {{ token.last_used_at or "never" }}</small>
+  {% if token.revoked_at %}<span class="status">revoked</span>
+  {% else %}
+  <form style="display:inline" hx-post="/admin/projects/{{ project_id or token.project_id }}/tokens/{{ token.id }}/revoke" hx-target="#token-{{ token.id }}" hx-swap="outerHTML">
+    <input type="hidden" name="csrf_token" value="{{ csrf }}"><button>Revoke</button>
+  </form>
+  {% endif %}
+</div>

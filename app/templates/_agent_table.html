@@ -1,0 +1,13 @@
+<table>
+<thead><tr><th>Status</th><th>Agent</th><th>Project</th><th>OS</th><th>Last seen</th></tr></thead>
+<tbody>
+{% for agent in agents %}
+<tr>
+  <td><span class="status">{{ agent.status.value }}</span></td>
+  <td><a href="/admin/agents/{{ agent.id }}">{{ agent.hostname }}</a><br><small>{{ agent.agent_id }}</small></td>
+  <td>{{ agent.project.name }}</td><td>{{ agent.os_name }} {{ agent.os_version }}</td>
+  <td><time datetime="{{ agent.last_seen_at.isoformat() }}">{{ agent.last_seen_at }}</time></td>
+</tr>
+{% else %}<tr><td colspan="5">No agents found.</td></tr>{% endfor %}
+</tbody>
+</table>

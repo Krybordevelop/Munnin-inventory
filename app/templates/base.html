@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Muninn Inventory{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+    nav { display:flex; gap:1rem; align-items:center; border-bottom:1px solid #8885; padding-bottom:1rem; }
+    nav form { margin-left:auto; } table { width:100%; border-collapse:collapse; }
+    th, td { padding:.55rem; border-bottom:1px solid #8885; text-align:left; }
+    input, select, textarea, button { padding:.5rem; margin:.2rem; }
+    .status { padding:.2rem .5rem; border-radius:.4rem; background:#8883; }
+    .secret { overflow-wrap:anywhere; border:1px solid #d90; padding:1rem; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
+    .card { border:1px solid #8885; border-radius:.5rem; padding:1rem; margin:1rem 0; }
+    .muted { opacity:.7; } .error { color:#d33; }
+  </style>
+</head>
+<body>
+{% if request.session.get("admin_id") %}
+<nav>
+  <strong>Muninn Inventory</strong>
+  <a href="/admin/agents">Agents</a>
+  <a href="/admin/pending">Pending</a>
+  <a href="/admin/projects">Projects</a>
+  <form method="post" action="/logout">
+    <input type="hidden" name="csrf_token" value="{{ csrf }}">
+    <button>Log out</button>
+  </form>
+</nav>
+{% endif %}
+{% block content %}{% endblock %}
+</body>
+</html>
