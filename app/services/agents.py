@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from typing import Any
 from uuid import UUID
 
 from sqlalchemy import Select, func, select
@@ -77,7 +78,7 @@ def agent_query(
     tag: str | None = None,
     hostname: str | None = None,
     last_seen_after: datetime | None = None,
-) -> Select[tuple[Agent]]:
+) -> Select[Any]:
     query = select(Agent).options(selectinload(Agent.tags))
     if project_id:
         query = query.where(Agent.project_id == project_id)
@@ -93,7 +94,7 @@ def agent_query(
 
 
 def list_agents(
-    db: Session, query: Select[tuple[Agent]], page: int, page_size: int
+    db: Session, query: Select[Any], page: int, page_size: int
 ) -> tuple[list[Agent], int]:
     count_query = select(func.count()).select_from(query.order_by(None).subquery())
     total = db.scalar(count_query) or 0
