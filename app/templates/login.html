@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Login · Muninn Inventory{% endblock %}
+{% block content %}
+<main class="card" style="max-width:28rem;margin:10vh auto">
+  <h1>Administrator login</h1>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf }}">
+    <label>Username <input name="username" required autofocus autocomplete="username"></label><br>
+    <label>Password <input name="password" type="password" required autocomplete="current-password"></label><br>
+    <button>Log in</button>
+  </form>
+</main>
+{% endblock %}

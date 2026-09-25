@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ agent.hostname }}</h1>
+<p><span class="status">{{ agent.status.value }}</span> · {{ agent.project.name }} · <code>{{ agent.agent_id }}</code></p>
+<div class="grid">
+  <section class="card"><h2>Lifecycle</h2>
+    <p>Registered: {{ agent.registered_at }}</p><p>Last seen: {{ agent.last_seen_at }}</p>
+    <p class="muted">Last-seen age is informational only; no monitoring policy is applied.</p>
+    <form method="post" action="/admin/agents/{{ agent.id }}/status">
+      <input type="hidden" name="csrf_token" value="{{ csrf }}">
+      {% if agent.status != "active" %}<button name="status" value="active">Approve</button>{% endif %}
+      {% if agent.status != "disabled" %}<button name="status" value="disabled">Disable</button>{% endif %}
+    </form>
+  </section>
+  <section class="card"><h2>System</h2>
+    <p>OS: {{ agent.os_name }} {{ agent.os_version }}</p><p>Kernel: {{ agent.kernel or "—" }}</p>
+    <p>CPU: {{ agent.cpu_model or "—" }} ({{ agent.cpu_cores }} cores)</p>
+    <p>RAM: {{ "%.1f"|format(agent.ram_bytes / 1073741824) }} GiB</p>
+    <p>Disk: {{ "%.1f"|format(agent.disk_bytes / 1073741824) }} GiB</p>
+    <p>IP: {{ agent.ip_addresses|join(", ") or "—" }}</p>
+  </section>
+</div>
+<form method="post" action="/admin/agents/{{ agent.id }}" class="card">
+  <input type="hidden" name="csrf_token" value="{{ csrf }}">
+  <label>Description<br><textarea name="description" rows="4" cols="60">{{ agent.description }}</textarea></label><br>
+  <label>Tags (comma-separated)<br><input name="tags" value="{{ agent.tags|map(attribute='name')|join(', ') }}"></label><br>
+  <button>Save administrative fields</button>
+</form>
+<details><summary>Extended inventory</summary><pre>{{ agent.inventory }}</pre></details>
+{% endblock %}

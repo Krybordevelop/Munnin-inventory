@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Agents <small class="muted">{{ total }}</small></h1>
+<form hx-get="/admin/agents" hx-target="#agents" hx-push-url="true">
+  <select name="project_id"><option value="">All projects</option>
+  {% for project in projects %}<option value="{{ project.id }}" {% if filters.project_id == project.id %}selected{% endif %}>{{ project.name }}</option>{% endfor %}
+  </select>
+  <select name="status"><option value="">All statuses</option>
+  {% for value in ["pending","active","disabled"] %}<option {% if filters.status and filters.status.value == value %}selected{% endif %}>{{ value }}</option>{% endfor %}
+  </select>
+  <input name="hostname" value="{{ filters.hostname }}" placeholder="Hostname">
+  <input name="tag" value="{{ filters.tag }}" placeholder="Tag">
+  <label>Seen after <input type="datetime-local" name="last_seen_after" value="{{ filters.last_seen_after }}"></label>
+  <button>Filter</button>
+</form>
+<div id="agents">{% include "_agent_table.html" %}</div>
+{% endblock %}
